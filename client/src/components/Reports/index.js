@@ -8,7 +8,6 @@ export default class Reports extends Component {
     return (
       <React.Fragment>
         <LoginForm />
-        <div>Hello WOrlds</div>
       </React.Fragment>
     );
   }

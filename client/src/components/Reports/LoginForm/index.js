@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import FacebookLogin from 'react-facebook-login';
 
+import './style.scss';
+
 const LoginFormWrapper = styled.div`
   width: 20%;
   text-align: center;
@@ -54,7 +56,7 @@ class LoginForm extends Component {
     return (
       <LoginFormWrapper>
         <div className="text-content">
-          <h3>Connect</h3>
+          <h3>Login</h3>
           <span>with</span>
         </div>
         <FacebookLogin
@@ -62,6 +64,9 @@ class LoginForm extends Component {
           autoLoad={false}
           fields="name,email,picture"
           callback={this.facebookResponses}
+          cssClass="facebook-login-button"
+          icon="fa-facebook"
+          textButton="Facebook"
         />
       </LoginFormWrapper>
     );

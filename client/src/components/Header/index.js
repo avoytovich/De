@@ -8,7 +8,7 @@ const HeaderWrapper = styled.div`
 
 const Header = () => (
   <HeaderWrapper>
-    <h1>Share your doctor problems</h1>
+    <h1>Report a doctor problem</h1>
   </HeaderWrapper>
 );
 

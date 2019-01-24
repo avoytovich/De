@@ -21,20 +21,7 @@ const styles = theme => ({
 });
 
 function getSteps() {
-  return ['Login', 'Write Report', 'Submit'];
-}
-
-function getStepContent(stepIndex) {
-  switch (stepIndex) {
-    case 0:
-      return 'Select campaign settings...';
-    case 1:
-      return 'What is an ad group anyways?';
-    case 2:
-      return 'This is the bit I really care about!';
-    default:
-      return 'Unknown stepIndex';
-  }
+  return ['Login', 'Report a problem', 'Post'];
 }
 
 class HorizontalLabelPositionBelowStepper extends React.Component {
@@ -74,35 +61,6 @@ class HorizontalLabelPositionBelowStepper extends React.Component {
             </Step>
           ))}
         </Stepper>
-        <div>
-          {this.state.activeStep === steps.length ? (
-            <div>
-              <Typography className={classes.instructions}>
-                All steps completed
-              </Typography>
-              <Button onClick={this.handleReset}>Reset</Button>
-            </div>
-          ) : (
-            <div>
-              <div>
-                <Button
-                  disabled={activeStep === 0}
-                  onClick={this.handleBack}
-                  className={classes.backButton}
-                >
-                  Back
-                </Button>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={this.handleNext}
-                >
-                  {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-                </Button>
-              </div>
-            </div>
-          )}
-        </div>
       </div>
     );
   }
