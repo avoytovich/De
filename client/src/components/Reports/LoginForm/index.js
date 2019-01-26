@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import FacebookLogin from 'react-facebook-login';
+import { facebookAuth } from '../../../redux/actions/login';
 
 import './style.scss';
 
@@ -13,45 +14,6 @@ const LoginFormWrapper = styled.div`
 `;
 
 class LoginForm extends Component {
-  state = {
-    isAuth: false,
-    user: null,
-    token: '',
-  };
-
-  facebookResponses = response => {
-    const tokenBlob = new Blob(
-      [
-        JSON.stringify(
-          {
-            access_token: response.accessToken,
-          },
-          null,
-          2,
-        ),
-      ],
-      { type: 'application/json' },
-    );
-
-    const options = {
-      method: 'POST',
-      body: tokenBlob,
-      mode: 'cors',
-      cache: 'default',
-    };
-
-    fetch('http://localhost:3001/api/v1/auth/facebook', options).then(r => {
-      const token = r.headers.get('x-auth-token');
-      r.json().then(user => {
-        console.log(user);
-        console.log(token);
-        if (token) {
-          this.setState({ isAuthenticated: true, user, token });
-        }
-      });
-    });
-  };
-
   render() {
     return (
       <LoginFormWrapper>
@@ -63,7 +25,7 @@ class LoginForm extends Component {
           appId="394740917940370"
           autoLoad={false}
           fields="name,email,picture"
-          callback={this.facebookResponses}
+          callback={facebookAuth}
           cssClass="facebook-login-button"
           icon="fa-facebook"
           textButton="Facebook"

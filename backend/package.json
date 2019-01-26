@@ -19,6 +19,7 @@
   "license": "ISC",
   "homepage": "https://bitbucket.org/Slasherio/dentistreport#readme",
   "dependencies": {
+    "bluebird": "^3.5.3",
     "body-parser": "^1.18.3",
     "concurrently": "^4.1.0",
     "cookie-parser": "^1.4.3",
@@ -29,6 +30,7 @@
     "morgan": "^1.9.1",
     "passport": "^0.4.0",
     "passport-facebook-token": "^3.3.0",
+    "passport-jwt": "^4.0.0",
     "request": "^2.88.0"
   },
   "devDependencies": {

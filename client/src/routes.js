@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { Normalize } from 'styled-normalize';
 import Reports from './components/Reports';
 import Header from './components/Header';
-import Stepper from './components/Stepper';
+import ReportStepper from './components/Stepper';
 import Test from './components/Test';
 
 const MainContent = styled.div`
@@ -22,7 +22,7 @@ const routes = (
     <Normalize />
     <Header />
     <MainContent>
-      <Stepper />
+      <ReportStepper />
       <Switch>
         <Route exact path="/reports" component={Reports} />
         <Route path="/reports/:id" component={Test} />
