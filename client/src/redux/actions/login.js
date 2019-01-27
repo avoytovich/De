@@ -1,5 +1,8 @@
+import { push } from 'connected-react-router';
 import { wrapRequest } from '../../utils/api';
 import { domen, apiRoutes } from '../../config/apiRoutes';
+import { nextStep } from './stepper';
+import omit from 'lodash/omit';
 
 export const facebookAuth = facebookResponse => async dispatch => {
   const tokenBlob = new Blob(
@@ -14,7 +17,6 @@ export const facebookAuth = facebookResponse => async dispatch => {
     ],
     { type: 'application/json' },
   );
-
   const registerUser = await wrapRequest({
     method: 'POST',
     url: `${domen}${apiRoutes.facebookAuth}`,
@@ -22,6 +24,16 @@ export const facebookAuth = facebookResponse => async dispatch => {
     cache: 'default',
     data: tokenBlob,
   });
-
-  console.log(registerUser);
+  const { data } = registerUser;
+  dispatch({
+    type: 'AUTH',
+    payload: data,
+  });
+  dispatch(nextStep());
+  dispatch(push('report-problem'));
+  localStorage.setItem('token', data.token);
+  localStorage.setItem(
+    'user',
+    JSON.stringify(omit(data, ['token', 'id', '_id', 'email'])),
+  );
 };

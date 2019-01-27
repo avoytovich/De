@@ -6,8 +6,7 @@ import styled from 'styled-components';
 import { Normalize } from 'styled-normalize';
 import Reports from './components/Reports';
 import Header from './components/Header';
-import ReportStepper from './components/Stepper';
-import Test from './components/Test';
+import ReportProblem from './components/ReportProblem';
 
 const MainContent = styled.div`
   display: flex;
@@ -17,15 +16,19 @@ const MainContent = styled.div`
   margin-top: 45px;
 `;
 
+export const isLogged = () => {
+  const token = localStorage.getItem('token');
+  return !!token;
+};
+
 const routes = (
   <div className="app">
     <Normalize />
     <Header />
     <MainContent>
-      <ReportStepper />
       <Switch>
-        <Route exact path="/reports" component={Reports} />
-        <Route path="/reports/:id" component={Test} />
+        <Route path="/reports" component={Reports} />
+        <Route path="/report-problem" component={ReportProblem} />
         <Redirect from="/" to="/reports" />
       </Switch>
     </MainContent>

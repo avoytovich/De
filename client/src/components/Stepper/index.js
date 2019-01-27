@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 /** Constants, Utils*/
 import { steps } from '../../constants';
@@ -17,13 +18,11 @@ const styles = theme => ({
 });
 
 class ReportStepper extends React.Component {
-  state = {
-    activeStep: 0,
-  };
-
   render() {
-    const { classes } = this.props;
-    const { activeStep } = this.state;
+    const {
+      classes,
+      stepperReducer: { activeStep },
+    } = this.props;
 
     return (
       <div className={classes.root}>
@@ -43,4 +42,7 @@ ReportStepper.propTypes = {
   classes: PropTypes.object,
 };
 
-export default withStyles(styles)(ReportStepper);
+const mapStateToProps = state => ({
+  stepperReducer: state.stepperReducer,
+});
+export default connect(mapStateToProps)(withStyles(styles)(ReportStepper));
