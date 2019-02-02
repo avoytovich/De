@@ -30,10 +30,10 @@ export const facebookAuth = facebookResponse => async dispatch => {
     payload: data,
   });
   dispatch(nextStep());
-  dispatch(push('report-problem'));
+  dispatch(push(`report-problem/${data.id}`));
   localStorage.setItem('token', data.token);
   localStorage.setItem(
     'user',
-    JSON.stringify(omit(data, ['token', 'id', '_id', 'email'])),
+    JSON.stringify(omit(data, ['token', '_id', 'email'])),
   );
 };

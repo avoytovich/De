@@ -1,1 +1,1 @@
-export const steps = ['Login', 'Report a problem', 'Post'];
+export const steps = ['Login', 'Report a problem', 'Review'];

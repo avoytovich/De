@@ -1,9 +1,14 @@
-var express = require('express');
-var router = express.Router();
-var { generateToken, sendToken } = require('../utils/token.utils');
-var passport = require('passport');
+const express = require('express');
+const router = express.Router();
+const { generateToken, sendToken } = require('../utils/token.utils');
+const passport = require('passport');
 require('../passport')();
 
+/**
+ *  Method: POST
+ *  Route: /facebook
+ *  Auth with facebook
+ */
 router.route('/facebook').post(
   passport.authenticate('facebook-token', { session: false }),
   function(req, res, next) {

@@ -8,6 +8,7 @@ import { history } from '../../index';
 
 import { auth } from './auth';
 import { stepperReducer } from './stepper';
+import { report } from './report';
 
 /**
  * Merges the main reducer with the router state and dynamically injected reducers
@@ -17,6 +18,7 @@ export default function createReducer(injectedReducers) {
     router: connectRouter(history),
     auth,
     stepperReducer,
+    report,
     ...injectedReducers,
   });
 

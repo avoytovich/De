@@ -33,7 +33,7 @@ class LoggedContent extends PureComponent {
           variant="contained"
           color="primary"
           style={{ width: '15%' }}
-          onClick={() => history.push('/report-problem')}
+          onClick={() => history.push(`/report-problem/${userData.id}`)}
         >
           Post report
         </Button>

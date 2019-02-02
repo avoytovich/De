@@ -6,4 +6,7 @@ if (process.env.NODE_ENV === 'development') {
 
 export const apiRoutes = {
   facebookAuth: 'auth/facebook',
+  reportCreate: 'report/create',
+  reportEdit: 'report/edit',
+  reportDelete: 'report/delete',
 };

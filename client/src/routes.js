@@ -7,6 +7,7 @@ import { Normalize } from 'styled-normalize';
 import Reports from './components/Reports';
 import Header from './components/Header';
 import ReportProblem from './components/ReportProblem';
+import ReviewReport from './components/ReviewReport';
 
 const MainContent = styled.div`
   display: flex;
@@ -28,7 +29,8 @@ const routes = (
     <MainContent>
       <Switch>
         <Route path="/reports" component={Reports} />
-        <Route path="/report-problem" component={ReportProblem} />
+        <Route path="/report-problem/:id" component={ReportProblem} />
+        <Route path="/review-report/:id" component={ReviewReport} />
         <Redirect from="/" to="/reports" />
       </Switch>
     </MainContent>

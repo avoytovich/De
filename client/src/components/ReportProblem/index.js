@@ -7,9 +7,11 @@ import PropTypes from 'prop-types';
 import ReportStepper from '../Stepper';
 
 /** Actions*/
-import { previousStep } from '../../redux/actions/stepper';
+import { previousStep, nextStep } from '../../redux/actions/stepper';
+import { sendReport } from '../../redux/actions/report';
 
 /** Configs, Utils*/
+import { history } from '../../index';
 
 /** UI*/
 import { Button } from '@material-ui/core';
@@ -32,7 +34,7 @@ const styles = theme => ({
   },
 });
 
-const ReportWrapper = styled.div`
+export const ReportWrapper = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -48,8 +50,40 @@ const ButtonsWrapper = styled.div`
 `;
 
 class ReportProblem extends Component {
+  state = {
+    reportTitle: '',
+    reportText: '',
+    googleMapsData: '',
+  };
+
+  handleChange = (e, key) => {
+    const value = e.target.value;
+    this.setState({
+      [key]: value,
+    });
+  };
+
+  handleSubmit = () => {
+    const {
+      match: {
+        params: { id },
+      },
+      nextStep,
+      sendReport,
+    } = this.props;
+    const userData = JSON.parse(localStorage.getItem('user'));
+    try {
+      sendReport(id, this.state);
+      nextStep();
+      history.push(`/review-report/${userData.id}`);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   render() {
     const { classes, previousStep } = this.props;
+    const { reportText, reportTitle, googleMapsData } = this.state;
     return (
       <React.Fragment>
         <ReportStepper />
@@ -59,31 +93,46 @@ class ReportProblem extends Component {
             id="outlined-name"
             label="Report title"
             className={classes.textField}
-            value="Default Value"
+            value={reportTitle}
             margin="normal"
             variant="outlined"
+            onChange={e => this.handleChange(e, 'reportTitle')}
+            inputProps={{
+              minLength: 3,
+              maxLength: 1500,
+            }}
           />
           <TextField
             id="outlined-multiline-static"
             label="Report Body"
             multiline
             rows="7"
-            defaultValue="Default Value"
             className={classes.textField}
+            value={reportText}
             margin="normal"
             variant="outlined"
+            onChange={e => this.handleChange(e, 'reportText')}
+            inputProps={{
+              minLength: 3,
+              maxLength: 1500,
+            }}
           />
           <TextField
             id="outlined-name"
             label="Google map URL of dentist"
             className={classes.textField}
-            value="Default Value"
+            value={googleMapsData}
             margin="normal"
             variant="outlined"
+            onChange={e => this.handleChange(e, 'googleMapsData')}
           />
         </ReportWrapper>
         <ButtonsWrapper>
-          <Button variant="contained" color="primary">
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => window.open(`https://www.google.com/maps`, '_blank')}
+          >
             <PinDrop />
             Open Google Map
           </Button>
@@ -91,6 +140,7 @@ class ReportProblem extends Component {
             variant="contained"
             color="primary"
             style={{ marginLeft: 10 }}
+            onClick={this.handleSubmit}
           >
             <Check />
             Submit
@@ -119,5 +169,5 @@ ReportProblem.propTypes = {
 
 export default connect(
   null,
-  { previousStep },
+  { previousStep, nextStep, sendReport },
 )(withStyles(styles)(ReportProblem));

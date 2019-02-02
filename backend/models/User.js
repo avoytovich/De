@@ -38,7 +38,7 @@ UserSchema.statics.registerFacebookUser = function(
   var that = this;
   return that.findOne(
     {
-      'facebookProvider.id': profile.id,
+      id: profile.id,
     },
     (err, user) => {
       // no user was found, lets create a new one
