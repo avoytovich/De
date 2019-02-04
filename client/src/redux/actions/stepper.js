@@ -13,3 +13,18 @@ export const previousStep = () => dispatch => {
   });
   dispatch(push('/'));
 };
+
+export const updateStep = (count, userId) => dispatch => {
+  dispatch({
+    type: T.UPDATE_STEP,
+    count,
+  });
+  dispatch(push(`/report-problem/${userId}`));
+};
+
+export const resetStep = () => dispatch => {
+  dispatch({
+    type: T.RESET_STEP,
+  });
+  dispatch(push('/'));
+};

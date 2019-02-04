@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import ReportStepper from '../Stepper';
 
 /** Actions*/
-import { previousStep, nextStep } from '../../redux/actions/stepper';
+import { previousStep, nextStep, resetStep } from '../../redux/actions/stepper';
 import { sendReport } from '../../redux/actions/report';
 
 /** Configs, Utils*/
@@ -82,7 +82,7 @@ class ReportProblem extends Component {
   };
 
   render() {
-    const { classes, previousStep } = this.props;
+    const { classes, previousStep, resetStep } = this.props;
     const { reportText, reportTitle, googleMapsData } = this.state;
     return (
       <React.Fragment>
@@ -152,7 +152,7 @@ class ReportProblem extends Component {
             color="primary"
             aria-label="Add"
             className={classes.fab}
-            onClick={previousStep}
+            onClick={resetStep}
           >
             <ArrowBackRounded />
           </Fab>
@@ -169,5 +169,5 @@ ReportProblem.propTypes = {
 
 export default connect(
   null,
-  { previousStep, nextStep, sendReport },
+  { previousStep, nextStep, sendReport, resetStep },
 )(withStyles(styles)(ReportProblem));

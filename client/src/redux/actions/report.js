@@ -1,6 +1,7 @@
 import { wrapRequest } from '../../utils/api';
 import { apiRoutes, domen } from '../../config/apiRoutes';
 import { T } from './constants';
+import { history } from '../../index';
 
 export const sendReport = (userId, reportData) => async dispatch => {
   const payload = await wrapRequest({
@@ -17,12 +18,14 @@ export const sendReport = (userId, reportData) => async dispatch => {
   });
 };
 
-export const editReport = data =>
+export const editReport = data => {
   wrapRequest({
     method: 'PUT',
     url: `${domen}${apiRoutes.reportEdit}`,
     data,
   });
+  history.push('/');
+};
 
 export const onChange = (value, path) => dispatch => {
   dispatch({
@@ -32,8 +35,16 @@ export const onChange = (value, path) => dispatch => {
   });
 };
 
-export const deleteReport = id => () =>
+export const deleteReport = id => () => {
   wrapRequest({
     method: 'DELETE',
     url: `${domen}${apiRoutes.reportDelete}/${id}`,
+  });
+  history.push('/');
+};
+
+export const getAllReports = () =>
+  wrapRequest({
+    method: 'GET',
+    url: `${domen}${apiRoutes.allReports}`,
   });

@@ -9,4 +9,5 @@ export const apiRoutes = {
   reportCreate: 'report/create',
   reportEdit: 'report/edit',
   reportDelete: 'report/delete',
+  allReports: 'reports/all',
 };

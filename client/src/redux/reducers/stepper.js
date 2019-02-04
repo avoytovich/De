@@ -15,7 +15,19 @@ const prevStep = (state, action) => {
   return { ...state, activeStep };
 };
 
+const updateStep = (state, action) => {
+  const activeStep = state.activeStep + action.count;
+  return { ...state, activeStep };
+};
+
+const resetStep = (state, action) => {
+  const activeStep = 0;
+  return { ...state, activeStep };
+};
+
 export const stepperReducer = createReducer(initialState, {
   [T.NEXT_STEP]: nextStep,
   [T.PREVIOUS_STEP]: prevStep,
+  [T.UPDATE_STEP]: updateStep,
+  [T.RESET_STEP]: resetStep,
 });

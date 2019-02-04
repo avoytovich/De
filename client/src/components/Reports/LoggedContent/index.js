@@ -1,11 +1,16 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import styled from 'styled-components';
+import { connect } from 'react-redux';
+
+/** Actions*/
+import { updateStep } from '../../../redux/actions/stepper';
 
 /** Config*/
 import { history } from '../../../index';
 
 /** UI*/
 import { Button } from '@material-ui/core';
+import { getAllReports } from '../../../redux/actions/report';
 
 const Avatar = styled.img.attrs({
   src: props => props.src,
@@ -20,8 +25,13 @@ const Wrapper = styled.div`
   margin-bottom: 10px;
 `;
 
-class LoggedContent extends PureComponent {
+class LoggedContent extends Component {
+  componentDidMount() {
+    getAllReports();
+  }
+
   render() {
+    const { updateStep } = this.props;
     const userData = JSON.parse(localStorage.getItem('user'));
     return (
       <React.Fragment>
@@ -33,7 +43,7 @@ class LoggedContent extends PureComponent {
           variant="contained"
           color="primary"
           style={{ width: '15%' }}
-          onClick={() => history.push(`/report-problem/${userData.id}`)}
+          onClick={() => updateStep(2, userData.id)}
         >
           Post report
         </Button>
@@ -42,4 +52,7 @@ class LoggedContent extends PureComponent {
   }
 }
 
-export default LoggedContent;
+export default connect(
+  null,
+  { updateStep },
+)(LoggedContent);
