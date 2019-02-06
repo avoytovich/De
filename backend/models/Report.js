@@ -1,10 +1,13 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const reportSchema = new Schema({
   userId: {
     type: String,
     required: true,
+  },
+  dateOfCreation: {
+    type: String,
   },
   reportData: {
     reportTitle: {
@@ -21,5 +24,5 @@ const reportSchema = new Schema({
   },
 });
 
-const Report = mongoose.model('report', reportSchema);
+const Report = mongoose.model("report", reportSchema);
 module.exports = Report;

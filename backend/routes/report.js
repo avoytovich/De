@@ -18,8 +18,7 @@ const moment = require("moment");
 router.post("/create", (req, res) => {
   const dateOfCreation = moment().format("DD / MM / YYYY");
   const body = { ...req.body, dateOfCreation };
-  console.log(body);
-  new Report(req.body).save().then(report => res.json(report));
+  new Report(body).save().then(report => res.json(report));
 });
 
 /**
