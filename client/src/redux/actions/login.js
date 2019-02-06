@@ -1,8 +1,8 @@
-import { push } from 'connected-react-router';
-import { wrapRequest } from '../../utils/api';
-import { domen, apiRoutes } from '../../config/apiRoutes';
-import { nextStep } from './stepper';
-import omit from 'lodash/omit';
+import { push } from "connected-react-router";
+import { wrapRequest } from "../../utils/api";
+import { domen, apiRoutes } from "../../config/apiRoutes";
+import { nextStep } from "./stepper";
+import omit from "lodash/omit";
 
 export const facebookAuth = facebookResponse => async dispatch => {
   const tokenBlob = new Blob(
@@ -15,25 +15,25 @@ export const facebookAuth = facebookResponse => async dispatch => {
         2,
       ),
     ],
-    { type: 'application/json' },
+    { type: "application/json" },
   );
   const registerUser = await wrapRequest({
-    method: 'POST',
+    method: "POST",
     url: `${domen}${apiRoutes.facebookAuth}`,
-    mode: 'cors',
-    cache: 'default',
+    mode: "cors",
+    cache: "default",
     data: tokenBlob,
   });
   const { data } = registerUser;
   dispatch({
-    type: 'AUTH',
+    type: "AUTH",
     payload: data,
   });
   dispatch(nextStep());
   dispatch(push(`report-problem/${data.id}`));
-  localStorage.setItem('token', data.token);
+  localStorage.setItem("token", data.token);
   localStorage.setItem(
-    'user',
-    JSON.stringify(omit(data, ['token', '_id', 'email'])),
+    "user",
+    JSON.stringify(omit(data, ["token", "_id", "email"])),
   );
 };

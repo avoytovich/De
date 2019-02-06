@@ -1,16 +1,16 @@
-import React, { Component } from 'react';
-import styled from 'styled-components';
-import { connect } from 'react-redux';
+import React, { Component } from "react";
+import styled from "styled-components";
+import { connect } from "react-redux";
 
 /** Actions*/
-import { updateStep } from '../../../redux/actions/stepper';
+import { updateStep } from "../../../redux/actions/stepper";
 
 /** Config*/
-import { history } from '../../../index';
+import { history } from "../../../index";
 
 /** UI*/
-import { Button } from '@material-ui/core';
-import { getAllReports } from '../../../redux/actions/report';
+import { Button } from "@material-ui/core";
+import { getAllReports } from "../../../redux/actions/report";
 
 const Avatar = styled.img.attrs({
   src: props => props.src,
@@ -32,7 +32,7 @@ class LoggedContent extends Component {
 
   render() {
     const { updateStep } = this.props;
-    const userData = JSON.parse(localStorage.getItem('user'));
+    const userData = JSON.parse(localStorage.getItem("user"));
     return (
       <React.Fragment>
         <Wrapper>
@@ -42,7 +42,7 @@ class LoggedContent extends Component {
         <Button
           variant="contained"
           color="primary"
-          style={{ width: '15%' }}
+          style={{ width: "15%" }}
           onClick={() => updateStep(2, userData.id)}
         >
           Post report
