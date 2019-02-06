@@ -1,36 +1,38 @@
-import React, { Component } from 'react';
-import styled from 'styled-components';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+import React, { Component } from "react";
+import styled from "styled-components";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import isEmpty from "lodash/isEmpty";
 
 /** Components*/
-import ReportStepper from '../Stepper';
+import ReportStepper from "../Stepper";
 
 /** Actions*/
-import { previousStep, nextStep, resetStep } from '../../redux/actions/stepper';
-import { sendReport } from '../../redux/actions/report';
+import { previousStep, nextStep, resetStep } from "../../redux/actions/stepper";
+import { sendReport } from "../../redux/actions/report";
 
 /** Configs, Utils*/
-import { history } from '../../index';
+import { history } from "../../index";
+import validateReportData from "../../utils/validation/reportValidation";
 
 /** UI*/
-import { Button } from '@material-ui/core';
-import PinDrop from '@material-ui/icons/PinDrop';
-import Check from '@material-ui/icons/Check';
-import TextField from '@material-ui/core/TextField';
-import { withStyles } from '@material-ui/core/styles';
-import ArrowBackRounded from '@material-ui/icons/ArrowBackRounded';
-import Fab from '@material-ui/core/Fab';
-import Tooltip from '@material-ui/core/Tooltip';
+import { Button } from "@material-ui/core";
+import PinDrop from "@material-ui/icons/PinDrop";
+import Check from "@material-ui/icons/Check";
+import TextField from "@material-ui/core/TextField";
+import { withStyles } from "@material-ui/core/styles";
+import ArrowBackRounded from "@material-ui/icons/ArrowBackRounded";
+import Fab from "@material-ui/core/Fab";
+import Tooltip from "@material-ui/core/Tooltip";
 
 const styles = theme => ({
   textField: {
-    width: '50%',
+    width: "50%",
   },
   fab: {
-    position: 'absolute',
-    top: '17%',
-    left: '2%',
+    position: "absolute",
+    top: "17%",
+    left: "2%",
   },
 });
 
@@ -51,9 +53,10 @@ const ButtonsWrapper = styled.div`
 
 class ReportProblem extends Component {
   state = {
-    reportTitle: '',
-    reportText: '',
-    googleMapsData: '',
+    reportTitle: "",
+    reportText: "",
+    googleMapsData: "",
+    errors: {},
   };
 
   handleChange = (e, key) => {
@@ -71,7 +74,9 @@ class ReportProblem extends Component {
       nextStep,
       sendReport,
     } = this.props;
-    const userData = JSON.parse(localStorage.getItem('user'));
+    const userData = JSON.parse(localStorage.getItem("user"));
+    const { isValid, errors } = validateReportData(this.state);
+    if (!isValid) return this.setState({ errors });
     try {
       sendReport(id, this.state);
       nextStep();
@@ -82,8 +87,8 @@ class ReportProblem extends Component {
   };
 
   render() {
-    const { classes, previousStep, resetStep } = this.props;
-    const { reportText, reportTitle, googleMapsData } = this.state;
+    const { classes, resetStep } = this.props;
+    const { reportText, reportTitle, googleMapsData, errors } = this.state;
     return (
       <React.Fragment>
         <ReportStepper />
@@ -96,11 +101,13 @@ class ReportProblem extends Component {
             value={reportTitle}
             margin="normal"
             variant="outlined"
-            onChange={e => this.handleChange(e, 'reportTitle')}
+            onChange={e => this.handleChange(e, "reportTitle")}
             inputProps={{
               minLength: 3,
               maxLength: 1500,
             }}
+            error={!isEmpty(errors.reportTitle)}
+            helperText={errors.reportTitle}
           />
           <TextField
             id="outlined-multiline-static"
@@ -111,12 +118,15 @@ class ReportProblem extends Component {
             value={reportText}
             margin="normal"
             variant="outlined"
-            onChange={e => this.handleChange(e, 'reportText')}
+            onChange={e => this.handleChange(e, "reportText")}
             inputProps={{
               minLength: 3,
               maxLength: 1500,
             }}
+            error={!isEmpty(errors.reportText)}
+            helperText={errors.reportText}
           />
+          <p>Characters: {`${this.state.reportText.length} / 1500`}</p>
           <TextField
             id="outlined-name"
             label="Google map URL of dentist"
@@ -124,14 +134,14 @@ class ReportProblem extends Component {
             value={googleMapsData}
             margin="normal"
             variant="outlined"
-            onChange={e => this.handleChange(e, 'googleMapsData')}
+            onChange={e => this.handleChange(e, "googleMapsData")}
           />
         </ReportWrapper>
         <ButtonsWrapper>
           <Button
             variant="contained"
             color="primary"
-            onClick={() => window.open(`https://www.google.com/maps`, '_blank')}
+            onClick={() => window.open(`https://www.google.com/maps`, "_blank")}
           >
             <PinDrop />
             Open Google Map
@@ -164,7 +174,7 @@ class ReportProblem extends Component {
 
 ReportProblem.propTypes = {
   classes: PropTypes.object,
-  previousStep: PropTypes.number.required,
+  resetStep: PropTypes.func.required,
 };
 
 export default connect(
