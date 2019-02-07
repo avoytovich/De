@@ -10,4 +10,5 @@ export const apiRoutes = {
   reportEdit: 'report/edit',
   reportDelete: 'report/delete',
   allReports: 'reports/all',
+  reportUsers: 'reports/users',
 };

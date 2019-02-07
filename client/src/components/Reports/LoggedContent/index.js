@@ -1,16 +1,20 @@
-import React, { Component } from "react";
-import styled from "styled-components";
-import { connect } from "react-redux";
+import React, { Component } from 'react';
+import styled from 'styled-components';
+import { connect } from 'react-redux';
 
 /** Actions*/
-import { updateStep } from "../../../redux/actions/stepper";
+import { updateStep } from '../../../redux/actions/stepper';
 
 /** Config*/
-import { history } from "../../../index";
+import { history } from '../../../index';
 
 /** UI*/
-import { Button } from "@material-ui/core";
-import { getAllReports } from "../../../redux/actions/report";
+import { Button } from '@material-ui/core';
+import {
+  getAllReports,
+  getAllReportsPagination,
+  getUsers,
+} from '../../../redux/actions/report';
 
 const Avatar = styled.img.attrs({
   src: props => props.src,
@@ -25,14 +29,54 @@ const Wrapper = styled.div`
   margin-bottom: 10px;
 `;
 
+const Report = styled.div`
+  margin: 5px;
+  width: 50%;
+  border: 1px solid gray;
+`;
+
+const Paragraph = styled.div`
+  padding 5px;
+  font-size: 20px;
+  font-family: Muli;
+`;
+
 class LoggedContent extends Component {
-  componentDidMount() {
-    getAllReports();
+  constructor(props) {
+    super(props);
+    this.state = {
+      reports: {},
+      page: 1,
+    };
   }
 
+  componentDidMount() {
+    const { getAllReportsPagination, getUsers } = this.props;
+    const { page } = this.state;
+    //getAllReports();
+    getAllReportsPagination(page);
+    getUsers();
+  }
+
+  getUserInfo = id => {
+    const {
+      loggedContent: { data },
+    } = this.props;
+    const filter = data.filter(data => {
+      return data.id == id;
+    });
+    return filter[0];
+  };
+
   render() {
-    const { updateStep } = this.props;
-    const userData = JSON.parse(localStorage.getItem("user"));
+    console.log('this.props', this.props);
+    console.log('this.state', this.state);
+    const {
+      updateStep,
+      getUserById,
+      loggedContent: { reports },
+    } = this.props;
+    const userData = JSON.parse(localStorage.getItem('user'));
     return (
       <React.Fragment>
         <Wrapper>
@@ -42,17 +86,35 @@ class LoggedContent extends Component {
         <Button
           variant="contained"
           color="primary"
-          style={{ width: "15%" }}
+          style={{ width: '15%' }}
           onClick={() => updateStep(2, userData.id)}
         >
           Post report
         </Button>
+        <h3>Dentists Reports</h3>
+        {reports &&
+          reports.map((report, index) => (
+            <Report key={index}>
+              <Paragraph>{`Title: ${report.reportData.reportTitle}`}</Paragraph>
+              <Paragraph>{`Text: ${report.reportData.reportText}`}</Paragraph>
+              <Paragraph>
+                <Avatar src={this.getUserInfo(report.userId).photo} />
+                {`Posted by: ${this.getUserInfo(report.userId).fullName}`}
+              </Paragraph>
+            </Report>
+          ))}
       </React.Fragment>
     );
   }
 }
 
+const mapStateToProps = state => {
+  return {
+    loggedContent: state.report,
+  };
+};
+
 export default connect(
-  null,
-  { updateStep },
+  mapStateToProps,
+  { updateStep, getAllReportsPagination, getUsers },
 )(LoggedContent);

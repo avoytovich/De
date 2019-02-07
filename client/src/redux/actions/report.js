@@ -48,3 +48,35 @@ export const getAllReports = () =>
     method: 'GET',
     url: `${domen}${apiRoutes.allReports}`,
   });
+
+export const getAllReportsPagination = page => dispatch => {
+  return wrapRequest({
+    method: 'GET',
+    url: `${domen}${apiRoutes.allReports}/${page}`,
+  })
+    .then(data => {
+      dispatch({
+        type: T.GET_ALL_REPORTS_PAGINATION_SUCCESS,
+        payload: data,
+      });
+    })
+    .catch(err => {
+      console.log('Error', err);
+    });
+};
+
+export const getUsers = () => dispatch => {
+  return wrapRequest({
+    method: 'GET',
+    url: `${domen}${apiRoutes.reportUsers}`,
+  })
+    .then(data => {
+      dispatch({
+        type: T.GET_USERS,
+        payload: data,
+      });
+    })
+    .catch(err => {
+      console.log('Error', err);
+    });
+};

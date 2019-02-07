@@ -14,7 +14,14 @@ const initialState = {
 
 const saveReportData = (state, { payload }) => {
   const { data } = payload;
+  //console.log('data', data);
   return { ...state, ...data };
+};
+
+const saveReportArray = (state, { payload }) => {
+  const { data } = payload;
+  //console.log('data', data);
+  return { ...state, data };
 };
 
 const handleChange = (state, action) => {
@@ -25,4 +32,6 @@ const handleChange = (state, action) => {
 export const report = createReducer(initialState, {
   [T.SAVE_REPORT_DATA]: saveReportData,
   ['ON_CHANGE']: handleChange,
+  [T.GET_ALL_REPORTS_PAGINATION_SUCCESS]: saveReportData,
+  [T.GET_USERS]: saveReportArray,
 });
