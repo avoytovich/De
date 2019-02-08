@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
+import ReactPaginate from 'react-paginate';
 
 /** Actions*/
 import { updateStep } from '../../../redux/actions/stepper';
@@ -15,6 +16,8 @@ import {
   getAllReportsPagination,
   getUsers,
 } from '../../../redux/actions/report';
+
+import './loggedContent.css';
 
 const Avatar = styled.img.attrs({
   src: props => props.src,
@@ -47,6 +50,7 @@ class LoggedContent extends Component {
     this.state = {
       reports: {},
       page: 1,
+      perPage: 3,
     };
   }
 
@@ -55,17 +59,27 @@ class LoggedContent extends Component {
     const { page } = this.state;
     //getAllReports();
     getAllReportsPagination(page);
-    getUsers();
+    getUsers('exclusive');
   }
 
   getUserInfo = id => {
-    const {
-      loggedContent: { data },
-    } = this.props;
-    const filter = data.filter(data => {
-      return data.id == id;
+    const { loggedContent } = this.props;
+    return (
+      loggedContent.dataUsers &&
+      loggedContent.dataUsers.filter(data => data.id === id)[0]
+    );
+  };
+
+  handlePageClick = data => {
+    const { getAllReportsPagination } = this.props;
+    const { perPage } = this.state;
+
+    let selected = ++data.selected;
+    let offset = Math.ceil(selected * perPage);
+
+    this.setState({ offset: offset }, () => {
+      getAllReportsPagination(selected);
     });
-    return filter[0];
   };
 
   render() {
@@ -74,7 +88,8 @@ class LoggedContent extends Component {
     const {
       updateStep,
       getUserById,
-      loggedContent: { reports },
+      loggedContent,
+      loggedContent: { reports, data },
     } = this.props;
     const userData = JSON.parse(localStorage.getItem('user'));
     return (
@@ -92,17 +107,41 @@ class LoggedContent extends Component {
           Post report
         </Button>
         <h3>Dentists Reports</h3>
-        {reports &&
-          reports.map((report, index) => (
+        {loggedContent.reports &&
+          loggedContent.dataUsers &&
+          loggedContent.reports.map((report, index) => (
             <Report key={index}>
               <Paragraph>{`Title: ${report.reportData.reportTitle}`}</Paragraph>
               <Paragraph>{`Text: ${report.reportData.reportText}`}</Paragraph>
               <Paragraph>
                 <Avatar src={this.getUserInfo(report.userId).photo} />
-                {`Posted by: ${this.getUserInfo(report.userId).fullName}`}
+                {`Posted by: ${this.getUserInfo(report.userId).fullName}
+                 on ${report.dateOfCreation}`}
               </Paragraph>
+              <div className="detail-info">
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  onClick={() => history.push(`/report/${report['_id']}`)}
+                >
+                  Detail Info
+                </Button>
+              </div>
             </Report>
           ))}
+        <ReactPaginate
+          previousLabel={'previous'}
+          nextLabel={'next'}
+          breakLabel={'...'}
+          breakClassName={'break-me'}
+          pageCount={loggedContent.pages}
+          marginPagesDisplayed={1}
+          pageRangeDisplayed={2}
+          onPageChange={this.handlePageClick}
+          containerClassName={'pagination'}
+          subContainerClassName={'pages pagination'}
+          activeClassName={'active'}
+        />
       </React.Fragment>
     );
   }

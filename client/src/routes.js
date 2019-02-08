@@ -8,6 +8,7 @@ import Reports from './components/Reports';
 import Header from './components/Header';
 import ReportProblem from './components/ReportProblem';
 import ReviewReport from './components/ReviewReport';
+import Report from './components/Report';
 
 const MainContent = styled.div`
   display: flex;
@@ -31,6 +32,7 @@ const routes = (
         <Route path="/reports" component={Reports} />
         <Route path="/report-problem/:id" component={ReportProblem} />
         <Route path="/review-report/:id" component={ReviewReport} />
+        <Route path="/report/:id" component={Report} />
         <Redirect from="/" to="/reports" />
       </Switch>
     </MainContent>

@@ -43,11 +43,20 @@ export const deleteReport = id => () => {
   history.push('/');
 };
 
-export const getAllReports = () =>
+export const getAllReports = () => dispatch =>
   wrapRequest({
     method: 'GET',
     url: `${domen}${apiRoutes.allReports}`,
-  });
+  })
+    .then(data => {
+      dispatch({
+        type: T.GET_ALL_REPORTS,
+        payload: data,
+      });
+    })
+    .catch(err => {
+      console.log('Error', err);
+    });
 
 export const getAllReportsPagination = page => dispatch => {
   return wrapRequest({
@@ -65,14 +74,14 @@ export const getAllReportsPagination = page => dispatch => {
     });
 };
 
-export const getUsers = () => dispatch => {
+export const getUsers = exclusive => dispatch => {
   return wrapRequest({
     method: 'GET',
     url: `${domen}${apiRoutes.reportUsers}`,
   })
     .then(data => {
       dispatch({
-        type: T.GET_USERS,
+        type: !exclusive ? T.GET_USERS : T.GET_USERS_EXCLUSIVE,
         payload: data,
       });
     })

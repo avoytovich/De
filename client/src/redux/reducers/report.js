@@ -24,6 +24,12 @@ const saveReportArray = (state, { payload }) => {
   return { ...state, data };
 };
 
+const saveReportArrayExclusive = (state, { payload }) => {
+  const { data } = payload;
+  //console.log('data', data);
+  return { ...state, dataUsers: data };
+};
+
 const handleChange = (state, action) => {
   const { path, value } = action;
   return dotProp.set(state, path, value);
@@ -34,4 +40,6 @@ export const report = createReducer(initialState, {
   ['ON_CHANGE']: handleChange,
   [T.GET_ALL_REPORTS_PAGINATION_SUCCESS]: saveReportData,
   [T.GET_USERS]: saveReportArray,
+  [T.GET_USERS_EXCLUSIVE]: saveReportArrayExclusive,
+  [T.GET_ALL_REPORTS]: saveReportArray,
 });
